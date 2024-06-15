@@ -10,9 +10,9 @@ import Notfound from "./pages/Notfound";
 import instance, { getProducts } from "./axios";
 import ProductDetail from "./pages/ProductDetail";
 import Dashboard from "./pages/admin/Dashboard";
-import ProductAdd from "./pages/admin/ProductAdd";
-import ProductEdit from "./pages/admin/ProductEdit";
 import ProductForm from "./pages/admin/ProductForm";
+import LayoutClient from "./layouts/LayoutClient";
+import Register from "./pages/Register";
 
 function App() {
 	const [products, setProducts] = useState([]);
@@ -83,22 +83,41 @@ function App() {
 		})();
 	};
 
+	const handleRemove = (id) => {
+		console.log(id);
+		(async () => {
+			try {
+				console.log(id);
+
+				if (confirm('Are u sure??')) {
+					await instance.delete(`/products/${id}`);
+					const newData = await products.filter(item => item.id !== id && item);
+
+					//cách 2
+					// const newData = await getProducts()
+
+					setProducts(newData);
+				}
+			} catch (error) {
+				console.log(error);
+			}
+		})()
+	}
 	return (
 		<>
 			<Header />
 			<main>
 				<Routes>
-					<Route path="/" element={<Home data={products} />} />
+					<Route index element={<Home data={products} />} />
 					<Route path="/home" element={<Navigate to="/" />} />
 					<Route path="/product-detail/:id" element={<ProductDetail />} />
 					<Route path="/about" element={<About />} />
+
 					<Route path="/login" element={<Login />} />
-					<Route path="/admin" element={<Dashboard data={products} />} />
-					{/* <Route path="/admin/product-add" element={<ProductAdd onAdd={handleSubmit} />} />
-					<Route path="/admin/product-edit/:id" element={<ProductEdit onEdit={handleSubmitEdit} />} /> */}
+					<Route path="/register" element={<Register />} />
+					<Route path="/admin" element={<Dashboard data={products} removeProduct={handleRemove} />} />
 					<Route path="/admin/product-form" element={<ProductForm onProduct={handleSubmitForm} />} />
 					<Route path="/admin/product-form/:id" element={<ProductForm onProduct={handleSubmitForm} />} />
-
 					<Route path="*" element={<Notfound />} />
 				</Routes>
 			</main>

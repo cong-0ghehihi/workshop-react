@@ -9,7 +9,7 @@ const schema = z.object({
 	email: z.string().email(),
 	password: z.string().min(6)
 })
-const Login = ({ onAdd }) => {
+const Register = ({ onAdd }) => {
 
 	const nav = useNavigate();
 	const {
@@ -22,16 +22,14 @@ const Login = ({ onAdd }) => {
 		console.log(data);
 		(async () => {
 			try {
-				const res = await instance.post(`/login`, data);
-
-				localStorage.setItem('user', res.data)
-				if (confirm('Redirect to home page')) {
-					nav('/')
+				await instance.post(`/register`, data);
+                if(confirm('Redirect to login page')){
+					nav('/login')
 					console.log('111');
 				}
 			} catch (error) {
 				console.log(error);
-				alert(error.reponse.data || 'Login failed')
+				alert(error.reponse.data || 'Register fail')
 			}
 		})()
 	}
@@ -39,7 +37,7 @@ const Login = ({ onAdd }) => {
 	return (
 		<div>
 			<form onSubmit={handleSubmit(onSubmit)}>
-				<h1>Login</h1>
+				<h1>Register</h1>
 				<div className="mb-3">
 					<label htmlFor="email" className="form-label">
 						Email
@@ -60,4 +58,4 @@ const Login = ({ onAdd }) => {
 	);
 };
 
-export default Login;
+export default Register;

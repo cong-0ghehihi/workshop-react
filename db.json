@@ -589,13 +589,27 @@
       "id": 36
     },
     {
+      "title": "product 12",
+      "price": 12345,
+      "description": "12345",
       "id": 37
+    }
+  ],
+  "users": [
+    {
+      "email": "a@gmail.com",
+      "password": "$2a$10$.hgFhYXlWRtV6yuDgp0NcO6261UyWKjKXr9GZ4YOF6QbPOu8D9n3q",
+      "id": 1
     },
     {
-      "title": "san pham 2025",
-      "price": 200,
-      "description": "mo ta",
-      "id": 38
+      "email": "sbn@gmail.com",
+      "password": "$2a$10$errC3wPSyW79uiFPRrlkYulA9MffPBbVI9/7AhbKOR7UNJBNT6lbS",
+      "id": 2
+    },
+    {
+      "email": "sssa@gmail.com",
+      "password": "$2a$10$ptZQC7pdSerWzIxKf9k/1uqapaXr/pTRKSusi.b3RkZoq0hnmIGqC",
+      "id": 3
     }
   ]
 }
