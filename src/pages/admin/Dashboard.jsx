@@ -1,15 +1,35 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import instance from "../../axios";
+import { ProductContext } from "../../context/product";
+import { deleteProduct } from "../../axios";
 
-const Dashboard = ({ data, removeProduct }) => {
+const Dashboard = () => {
+	const { state, dispatch } = useContext(ProductContext); // Lấy state và dispatch từ context
 
-	const [searchTerm, setSearchTerm] = useState('');
+	const [filteredData, setFilteredData] = useState([]); // Khai báo state cho dữ liệu sản phẩm sau khi tìm kiếm
 
 	const handleSearchChange = (e) => {
-		setSearchTerm(e.target.value)
-	}
-const searchData = data.filter((p)=>p.title.toLowerCase().includes(searchTerm.toLowerCase()));
+		const result = state.products.filter((p) => p.title.toLowerCase().includes(e.target.value.toLowerCase()));
+		setFilteredData(result);
+	};
+
+	console.log(filteredData); // In state ra console để kiểm tra
+
+	const removeProduct = async (productId) => {
+		try {
+			await deleteProduct(productId); // Gọi API để xóa sản phẩm
+			dispatch({ type: 'DELETE_PRODUCT', payload: productId }); // Dispatch hành động xóa sản phẩm
+		} catch (error) {
+			console.error('Error deleting product:', error); // Bắt lỗi nếu có
+		}
+	};
+
+	useEffect(() => {
+		if (state) {
+			setFilteredData(state.products); // Khởi tạo filteredData với tất cả sản phẩm ban đầu
+		}
+	}, [state]); // Chỉ chạy effect này khi state thay đổi
+
 	return (
 		<div>
 			<h1>Hello, admin</h1>
@@ -18,11 +38,11 @@ const searchData = data.filter((p)=>p.title.toLowerCase().includes(searchTerm.to
 			</Link>
 
 			<div className="search-bar">
-				<input type="text"
-				placeholder="Search by title..."
-				className="form-control"
-					value={searchTerm}
-					onChange={handleSearchChange }
+				<input
+					type="text"
+					placeholder="Search by title..."
+					className="form-control"
+					onChange={handleSearchChange} // Cập nhật từ khóa tìm kiếm khi người dùng nhập
 				/>
 			</div>
 
@@ -38,7 +58,7 @@ const searchData = data.filter((p)=>p.title.toLowerCase().includes(searchTerm.to
 					</tr>
 				</thead>
 				<tbody>
-					{searchData.map((p) => (
+					{filteredData.map((p) => ( // Sử dụng filteredData để hiển thị dữ liệu đã tìm kiếm
 						<tr key={p.id}>
 							<td>{p.id}</td>
 							<td>{p.title}</td>

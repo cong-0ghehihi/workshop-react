@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import instance from "../axios";
+import  { getProductById } from "../axios";
 
 const ProductDetail = () => {
 	const { id } = useParams();
@@ -8,7 +8,7 @@ const ProductDetail = () => {
 	useEffect(() => {
 		(async () => {
 			try {
-				const { data } = await instance.get(`/products/${id}`);
+				const { data } = await getProductById(id);
 				setP(data);
 			} catch (error) {
 				console.log(error);

@@ -9,7 +9,7 @@ const schema = z.object({
 	email: z.string().email(),
 	password: z.string().min(6)
 })
-const Register = ({ onAdd }) => {
+const Register = () => {
 
 	const nav = useNavigate();
 	const {
